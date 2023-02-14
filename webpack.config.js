@@ -6,7 +6,7 @@ const webpack = require('webpack')
 const EslintPlugin = require('eslint-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
-const PORT = Number(process.env.PORT) || 8080
+const PORT = Number(process.env.PORT) || 8081
 
 process.env.NODE_ENV = process.env.NODE_ENV.replace(/^\s*|\s*$/g, '')
 
@@ -53,13 +53,6 @@ module.exports = (env, argv) => {
                 ),
                 presets: [[require.resolve('babel-preset-react-app')]],
                 plugins: [
-                  [
-                    require.resolve('babel-plugin-import'),
-                    {
-                      libraryName: 'antd',
-                      style: 'css',
-                    },
-                  ],
                   [
                     require.resolve('babel-plugin-named-asset-import'),
                     {

@@ -15,8 +15,15 @@ const Result = () => {
   // const onDownload = () => {
   //   parent.postMessage({ pluginMessage: {type:'storage.download'}}, '*')
   // }
+  const iconStyle = '.colorBlackStroke{fill:#40403C;}.colorGrayStroke{fill:#8F8C89;}.colorGrayFill{fill:#E6E7E8;}.colorBlueStroke{fill:#0C7DC2;}.colorGreenStroke{fill:#309048;}.colorOrangeStroke{fill:#E6802E;}.colorRedStroke{fill:#ED3D3B;}';
 
-  const svgStringArr = []
+  const mapData = {
+    fillArr : ['fill="#333840"', 'fill="#C3C3C3"', 'fill="#D8D8D8"', 'fill="#0A7EDF"', 'fill="#00A660"', 'fill="#EB6808"', 'fill="#E44C4C"'],
+    classArr : ['class="colorBlackStroke"', 'class="colorGrayStroke"', 'class="colorGrayFill"', 'class="colorBlueStroke"', 'class="colorGreenStroke"', 'class="colorOrangeStroke"', 'class="colorRedStroke"'],
+  };
+
+
+  const svgStringArr = [];
 
   let svgString: string
   // let iconNameArr = [];
@@ -29,53 +36,46 @@ const Result = () => {
     const svgDataArr = msg?.svgDataArr || []
     const nodeIDArr = msg?.nodeIDArr || []
     const iconNameArr = msg?.iconNameArr || []
-    const iconDescArr = msg?.iconDescArr || []
-    const nodeTypeArr = msg?.nodeTypeArr || []
-    const nodeNameData = msg?.nodeNameData || []
+    // const nodeTypeArr = msg?.nodeTypeArr || []
     const iconList = document.getElementById('list-container')
     const count = document.getElementById('count')
     const error = document.getElementById('error')
 
     if (msg.type === 'load-icon') {
-      const nodeData = []
+
       for (let i = 0; i < iconNameArr.length; i++) {
-        const svg = new TextDecoder().decode(svgDataArr[i])
+        let svg = new TextDecoder().decode(svgDataArr[i])
+
+      // 将颜色换成class
+       for ( let i = 0; i < mapData.fillArr.length; i++ ){
+       svg = svg.replace(RegExp(mapData.fillArr[i], 'g'), mapData.classArr[i])
+       }
 
         // 将svg转为DOM
         const parser = new DOMParser()
         const svgDOM = parser.parseFromString(svg, 'image/svg+xml')
-        const groupCount = svgDOM.getElementById(
-          `${iconNameArr[i]}`,
-        ).childElementCount
-
-        // 添加 desc描述
-        const svgDesc = svgDOM.createElementNS(
-          'http://www.w3.org/2000/svg',
-          'desc',
-        )
-        svgDesc.textContent = iconDescArr[i]
-        // console.log(svgDesc);
-
+    
         // 获取SVG元素
         const svgElement = svgDOM.documentElement
+  
+        svgElement.removeAttribute('height');
+        svgElement.removeAttribute('width');
+      
 
-        // 检查SVG元素是否存在并正确引用
-        if (svgElement != null) {
-          // 获取SVG元素的第一个子元素，并将<desc>元素插入到它的前面
-          const firstChild = svgElement.firstChild
-          svgElement.insertBefore(svgDesc, firstChild)
-        } else {
-          console.log('未找到SVG元素')
-        }
+        // 插入style
+        const styleElement = svgDOM.createElement('style');
+        styleElement.setAttribute('type','text/css');
+        styleElement.innerHTML = iconStyle;
+        svgElement.insertBefore(styleElement, svgElement.firstChild);
+        // console.log(styleElement);
 
-        // 去除根 g标签
-        const gToRemove = svgElement.querySelector(`#${iconNameArr[i]}`)
-        if (gToRemove !== null) {
-          const gChildren = gToRemove.childNodes
-          for (let i = gChildren.length - 1; i >= 0; i--) {
-            svgElement.insertBefore(gChildren[i], gToRemove.nextSibling)
+        // 去除fill-rule和clip-rule
+        const svgElementChildren = svgElement.getElementsByTagName('*');
+        for (let i = 0; i < svgElementChildren.length; i++) {
+          if (svgElementChildren[i].getAttribute('fill-rule') || svgElementChildren[i].getAttribute('clip-rule')) {
+            svgElementChildren[i].removeAttribute('fill-rule');
+            svgElementChildren[i].removeAttribute('clip-rule');
           }
-          gToRemove.parentNode.removeChild(gToRemove)
         }
 
         // 去除defs
@@ -86,96 +86,24 @@ const Result = () => {
             defs[0].parentNode.removeChild(def)
           }
         }
+        svgString = new XMLSerializer().serializeToString(svgDOM);
 
-        // 获取 SVG 中 stroke-width 属性的值
+        // 去除style中xmlns属性
+        
+        svgString = svgString.replace(/style xmlns=["'].*?["']/g, 'style');
 
-        const strokeWidthElement = svgDOM.querySelector('[stroke-width]')
-
-        if (strokeWidthElement !== null) {
-          const strokeWidth = strokeWidthElement.getAttribute('stroke-width')
-          // 将 stroke-width 属性的值设置为 SVG 元素的属性之一
-          svgDOM.querySelector('svg').setAttribute('stroke-width', strokeWidth)
-        } else {
-          svgDOM.querySelector('svg').setAttribute('stroke-width', '1')
-        }
-
-        const groupIDs = []
-        // 设置group内的fill和stroke
-        for (let j = 0; j < groupCount; j++) {
-          const svgGroup = svgDOM.getElementById(`group-${[j]}`)
-          // if (svgGroup !== null) {
-          //   const group = svgGroup.id
-          //   groupIDs.push(group)
-          // }
-          // 获取group那第一个元素的stroke
-          if (svgGroup !== null) {
-            let hexCode = svgGroup.firstElementChild.getAttribute('stroke')
-            if (hexCode !== null) {
-              // console.log(hexCode)
-            } else if (hexCode === null) {
-              hexCode = svgDOM
-                .getElementById(`group-${[j]}`)
-                .firstElementChild.getAttribute('fill')
-            }
-
-            const group = `group-${[j]}`
-            groupIDs.push(group)
-
-            // console.log(nodeData[i]);
-
-            svgGroup.setAttribute('stroke', hexCode)
-            svgGroup.setAttribute('fill', hexCode)
-
-            // 设置group那的图形stroke和fill
-            const strokeAttr = svgGroup.querySelectorAll('[stroke]')
-            const fillAttr = svgGroup.querySelectorAll('[fill]')
-            // console.log(strokeAttr,fillAttr);
-
-            if (strokeAttr.length > 0) {
-              for (let i = 0; i < strokeAttr.length; i++) {
-                if (strokeAttr[i].getAttribute('stroke') !== null) {
-                  strokeAttr[i].setAttribute('fill', 'none')
-                  strokeAttr[i].setAttribute(
-                    'vector-effect',
-                    'non-scaling-stroke',
-                  )
-                  strokeAttr[i].removeAttribute('stroke')
-                  strokeAttr[i].removeAttribute('stroke-width')
-                  strokeAttr[i].removeAttribute('id')
-                }
-              }
-            }
-
-            if (fillAttr.length > 0) {
-              for (let i = 0; i < fillAttr.length; i++) {
-                if (fillAttr[i].getAttribute('fill') !== null) {
-                  fillAttr[i].setAttribute('stroke', 'none')
-                  fillAttr[i].removeAttribute('fill')
-                  fillAttr[i].removeAttribute('id')
-                }
-              }
-            }
-          }
-        }
-        // 创建节点图层名称规则
-        nodeData.push({ id: iconNameArr[i], groupIDs: groupIDs })
-
-        svgString = new XMLSerializer().serializeToString(svgDOM)
-
-        svgString = svgString.replace(/>\s+</g, '><').trim()
-
-        // console.log(svgString)
+        console.log(svgString)
 
         svgStringArr.push(svgString)
 
         const iconWrap = document.createElement('div')
-        iconWrap.appendChild(svgElement)
+        iconWrap.innerHTML =(svgString)
         iconWrap.classList.add('icon-wrapper')
 
         const iconItem = document.createElement('div')
         iconItem.appendChild(iconWrap)
 
-        iconItem.classList.add('icon-list')
+        iconItem.classList.add('icon-list');
         iconItem.setAttribute('id', `${nodeIDArr[i]}`)
         iconItem.setAttribute('tabindex', `${[i]}`)
 
@@ -193,61 +121,7 @@ const Result = () => {
 
         contentWrap.appendChild(iconName)
 
-        if (iconDescArr[i] !== '' && iconDescArr[i] !== undefined) {
-          iconDesc.textContent = `${iconDescArr[i]}`
-          contentWrap.appendChild(iconDesc)
-        }
-
         iconItem.appendChild(contentWrap)
-
-        const errorMsg = document.createElement('span')
-        errorMsg.classList.add('error-info')
-
-        const viewBoxAttr = svgElement.getAttribute('viewBox')
-
-        if (iconDescArr[i] === undefined) {
-          errorMsg.textContent += `图层类型错误: ${nodeTypeArr[i]}; `
-        } else if (viewBoxAttr !== '0 0 16 16' && iconDescArr[i] === '') {
-          errorMsg.textContent += `图标尺寸不正确; `
-          errorMsg.textContent += `缺少图标描述; `
-        } else if (
-          viewBoxAttr !== '0 0 16 16' &&
-          iconDescArr[i] !== '' &&
-          iconDescArr[i] !== undefined
-        ) {
-          errorMsg.textContent += `图标尺寸不正确; `
-        } else if (viewBoxAttr === '0 0 16 16' && iconDescArr[i] === '') {
-          errorMsg.textContent += `缺少图标描述; `
-        }
-
-        console.log('输出', nodeNameData)
-        if (nodeData[i] && nodeData[i].groupIDs) {
-          console.log(nodeData[i].id, nodeData[i].groupIDs)
-
-          if (
-            !nodeData[i].groupIDs.some((name) =>
-              nodeNameData[i].childNodeNames.includes(name),
-            ) ||
-            nodeData[i].groupIDs.length !==
-              nodeNameData[i].childNodeNames.length
-          ) {
-            errorMsg.textContent += `分组图层命名错误; `
-            iconItem.classList.add('error-icon')
-          }
-        } else {
-          errorMsg.textContent += `分组图层命名错误; `
-          iconItem.classList.add('error-icon')
-        }
-
-        contentWrap.appendChild(errorMsg)
-
-        if (
-          viewBoxAttr !== '0 0 16 16' ||
-          iconDescArr[i] === '' ||
-          iconDescArr[i] === undefined
-        ) {
-          iconItem.classList.add('error-icon')
-        }
 
         iconList.appendChild(iconItem)
       }
