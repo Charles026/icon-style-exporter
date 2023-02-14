@@ -6,5 +6,5 @@ import './figma/index'
 figma.showUI(__html__, {
   title: 'Figma Plugin Sample',
   width: 400,
-  height: 300,
+  height: 600,
 })
