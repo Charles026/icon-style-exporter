@@ -6,7 +6,7 @@ const webpack = require('webpack')
 const EslintPlugin = require('eslint-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
-const PORT = Number(process.env.PORT) || 8000
+const PORT = Number(process.env.PORT) || 8080
 
 process.env.NODE_ENV = process.env.NODE_ENV.replace(/^\s*|\s*$/g, '')
 

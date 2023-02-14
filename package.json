@@ -1,7 +1,7 @@
 {
-  "name": "figma-plugin-sample-react-hot-reload",
+  "name": "wps-icon-exporter",
   "version": "1.0.0",
-  "description": "Your Figma plugin",
+  "description": "figma plugin for the icons exporting",
   "main": "code.js",
   "scripts": {
     "clean": "rimraf dist",
