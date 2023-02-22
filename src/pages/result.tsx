@@ -15,7 +15,7 @@ const Result = () => {
   // const onDownload = () => {
   //   parent.postMessage({ pluginMessage: {type:'storage.download'}}, '*')
   // }
-  const iconStyle = '.colorBlackStroke{fill:#40403C;}.colorGrayStroke{fill:#8F8C89;}.colorGrayFill{fill:#E6E7E8;}.colorBlueStroke{fill:#0C7DC2;}.colorGreenStroke{fill:#309048;}.colorOrangeStroke{fill:#E6802E;}.colorRedStroke{fill:#ED3D3B;}';
+  const iconStyle = '.colorBlackStroke{fill:#333840;}.colorGrayStroke{fill:#C3C3C3;}.colorGrayFill{fill:#D8D8D8;}.colorBlueStroke{fill:#0A7EDF;}.colorGreenStroke{fill:#00A660;}.colorOrangeStroke{fill:#EB6808;}.colorRedStroke{fill:#E44C4C;}';
 
   const mapData = {
     fillArr : ['fill="#333840"', 'fill="#C3C3C3"', 'fill="#D8D8D8"', 'fill="#0A7EDF"', 'fill="#00A660"', 'fill="#EB6808"', 'fill="#E44C4C"'],
@@ -69,14 +69,14 @@ const Result = () => {
         svgElement.insertBefore(styleElement, svgElement.firstChild);
         // console.log(styleElement);
 
-        // 去除fill-rule和clip-rule
-        const svgElementChildren = svgElement.getElementsByTagName('*');
-        for (let i = 0; i < svgElementChildren.length; i++) {
-          if (svgElementChildren[i].getAttribute('fill-rule') || svgElementChildren[i].getAttribute('clip-rule')) {
-            svgElementChildren[i].removeAttribute('fill-rule');
-            svgElementChildren[i].removeAttribute('clip-rule');
-          }
-        }
+        // // 去除fill-rule和clip-rule
+        // const svgElementChildren = svgElement.getElementsByTagName('*');
+        // for (let i = 0; i < svgElementChildren.length; i++) {
+        //   if (svgElementChildren[i].getAttribute('fill-rule') || svgElementChildren[i].getAttribute('clip-rule')) {
+        //     svgElementChildren[i].removeAttribute('fill-rule');
+        //     svgElementChildren[i].removeAttribute('clip-rule');
+        //   }
+        // }
 
         // 去除defs
         const defs = Array.from(svgDOM.getElementsByTagName('defs'))
