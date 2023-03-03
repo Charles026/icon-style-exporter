@@ -266,22 +266,23 @@ const Result = () => {
     }
   }
 
+
   return (
-    <div>
-      <div className="content">
-        <div className="navbar-wrapper">
-          <div className="back-wrapper">
-            <Button icon={<ArrowLeftOutlined />} onClick={handleClick}>
-              返回
-            </Button>
-          </div>
-          <div className="segment" id="segment-control">
-            <div className="segment-unit" id="count" onClick={onAll}></div>
-            <div className="segment-unit" id="error" onClick={onError}></div>
-          </div>
-        </div>
-        <div id="list-container"></div>
+    <div className="container">
+      <div className="navbar-wrapper">
+      <div className="back-wrapper">
+        <Button icon={<ArrowLeftOutlined />} onClick={handleClick}>
+          返回
+        </Button>
       </div>
+      <div className="segment" id="segment-control">
+        <div className="segment-unit" id="count" onClick={onAll}></div>
+        <div className="segment-unit" id="error" onClick={onError}></div>
+      </div>
+    </div>
+      
+        <div id="list-container"></div>
+     
       <div className="footer-wrapper">
         <Button id="downloadBtn" type="primary" onClick={onDownload}>
           下载SVG
