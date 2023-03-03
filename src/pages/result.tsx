@@ -26,6 +26,8 @@ const Result = () => {
   const svgStringArr = [];
 
   let svgString: string
+
+
   // let iconNameArr = [];
 
   // const segment = document.getElementById('segment-control');
@@ -67,7 +69,11 @@ const Result = () => {
         styleElement.setAttribute('type','text/css');
         styleElement.innerHTML = iconStyle;
         svgElement.insertBefore(styleElement, svgElement.firstChild);
-        // console.log(styleElement);
+
+        const svgChildren = Array.from(svgElement.children).filter(child => child.tagName !== 'style');
+
+        console.log(svgChildren);
+        
 
         // // 去除fill-rule和clip-rule
         // const svgElementChildren = svgElement.getElementsByTagName('*');
@@ -121,8 +127,43 @@ const Result = () => {
 
         contentWrap.appendChild(iconName)
 
-        iconItem.appendChild(contentWrap)
+        iconItem.appendChild(contentWrap);
+        const errorMsg = document.createElement('span')
+        errorMsg.classList.add('error-info')
 
+        const viewBoxAttr = svgElement.getAttribute('viewBox');
+
+        const viewBox16 = '0 0 16 16';
+        const viewBox24 = '0 0 24 24';
+        const viewBox12 = '0 0 12 12';
+        const viewBox32 = '0 0 32 32';
+        const viewBox48 = '0 0 48 48';
+
+        const allowViewBox = [viewBox12,viewBox16,viewBox24,viewBox32,viewBox48]
+
+        
+        if(svgChildren.every(child => child.getAttribute('stroke')==null)){
+          if (!allowViewBox.includes(viewBoxAttr) && svgChildren.some(child => !child.classList.length)) {
+            errorMsg.textContent += `图标尺寸不正确；图标颜色不正确; `
+            iconItem.classList.add('error-icon')
+          }
+          else if (!allowViewBox.includes(viewBoxAttr))  {
+            errorMsg.textContent += `图标尺寸不正确; `
+            iconItem.classList.add('error-icon')
+          }else if (svgChildren.some(child => !child.classList.length)) 
+          {
+            errorMsg.textContent += '图标颜色不正确; '
+            iconItem.classList.add('error-icon')
+          }
+        }else {
+          errorMsg.textContent += '图标未轮廓化; '
+          iconItem.classList.add('error-icon')
+        }
+        
+
+        
+
+        contentWrap.appendChild(errorMsg)
         iconList.appendChild(iconItem)
       }
 
@@ -172,6 +213,13 @@ const Result = () => {
     console.log('downloading...')
 
     // const svgOutArr = [];
+
+      // Check if download button is disabled
+      const downloadBtn = document.getElementById('downloadBtn')
+      if (downloadBtn.hasAttribute('disabled')) {
+        console.log('download button is disabled');
+       return
+      }
 
     const iconArrOut = Array.from(
       document.getElementsByClassName('icon-wrapper'),

@@ -82,6 +82,8 @@
   cursor: pointer;
 }
 
+
+
 .icon-list:hover {
   background-color: #f0f0f0;
 }
@@ -98,7 +100,6 @@
   display: flex;
   width: 56px;
   height: 56px;
-  /* border: 1px solid #ebebeb; */
   justify-content: center;
   align-items: center;
 }
@@ -106,23 +107,31 @@
 .icon-wrapper svg {
   width: 24px;
   height: 24px;
+
 }
+
+
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 6px;
   justify-content: center;
+  padding-left: 8px;
+  gap: 4px;
+  max-width: 280px;
 }
 
+
 .icon-name {
-  font-size: 16px;
+  font-size: 14px;
   color: #2d343d;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .icon-desc {
   color: #666666;
-  max-width: 240px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
