@@ -15,11 +15,12 @@ const Result = () => {
   // const onDownload = () => {
   //   parent.postMessage({ pluginMessage: {type:'storage.download'}}, '*')
   // }
-  const iconStyle = '.colorBlackStroke{fill:#333840;}.colorGrayStroke{fill:#C3C3C3;}.colorGrayFill{fill:#D8D8D8;}.colorBlueStroke{fill:#0A7EDF;}.colorGreenStroke{fill:#00A660;}.colorOrangeStroke{fill:#EB6808;}.colorRedStroke{fill:#E44C4C;}';
+  const iconStyle = '.colorBlackStroke{fill:#333840;}.colorGrayStroke{fill:#C3C3C3;}.colorGrayFill{fill:#D8D8D8;}.colorBlueStroke{fill:#0A7EDF;}.colorGreenStroke{fill:#00A660;}.colorOrangeStroke{fill:#EB6808;}.colorRedStroke{fill:#E44C4C;}.baseStrokeDark{fill:#36425A;}.baseStrokeLight{fill:#A4A9B4;}.baseFill{fill:#E9EBED;}.themeStroke{fill:#417FF9;}.themeFill{fill:#E8EFFE;}.deleteStroke{fill:#EE544B;}.deleteFill{fill:#FEF2F1;}';
+
 
   const mapData = {
-    fillArr : ['fill="#333840"', 'fill="#C3C3C3"', 'fill="#D8D8D8"', 'fill="#0A7EDF"', 'fill="#00A660"', 'fill="#EB6808"', 'fill="#E44C4C"'],
-    classArr : ['class="colorBlackStroke"', 'class="colorGrayStroke"', 'class="colorGrayFill"', 'class="colorBlueStroke"', 'class="colorGreenStroke"', 'class="colorOrangeStroke"', 'class="colorRedStroke"'],
+    fillArr : ['fill="#333840"', 'fill="#C3C3C3"', 'fill="#D8D8D8"', 'fill="#0A7EDF"', 'fill="#00A660"', 'fill="#EB6808"', 'fill="#E44C4C"','fill="#36425A"','fill="#A4A9B4"','fill="#E9EBED"','fill="#417FF9"','fill="#E8EFFE"','fill="#EE544B"','fill="#FEF2F1"'],
+    classArr : ['class="colorBlackStroke"', 'class="colorGrayStroke"', 'class="colorGrayFill"', 'class="colorBlueStroke"', 'class="colorGreenStroke"', 'class="colorOrangeStroke"', 'class="colorRedStroke"', 'class="baseStrokeDark"', 'class="baseStrokeLight"', 'class="baseFill"', 'class="themeStroke"', 'class="themeFill"', 'class="deleteStroke"', 'class="deleteFill"'],
   };
 
 
