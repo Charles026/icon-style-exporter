@@ -14,20 +14,72 @@ const Result = () => {
 
   // const onDownload = () => {
   //   parent.postMessage({ pluginMessage: {type:'storage.download'}}, '*')
+  
   // }
-  const iconStyle = '.colorBlackStroke{fill:#333840;}.colorGrayStroke{fill:#C3C3C3;}.colorGrayFill{fill:#D8D8D8;}.colorBlueStroke{fill:#0A7EDF;}.colorGreenStroke{fill:#00A660;}.colorOrangeStroke{fill:#EB6808;}.colorRedStroke{fill:#E44C4C;}.baseStrokeDark{fill:#36425A;}.baseStrokeLight{fill:#A4A9B4;}.baseFill{fill:#E9EBED;}.themeStroke{fill:#417FF9;}.themeFill{fill:#E8EFFE;}.deleteStroke{fill:#EE544B;}.deleteFill{fill:#FEF2F1;}';
+
+  // color variables
+
+  // const colorBlackStroke = '#333840';
+  // const colorGrayStroke = '#C3C3C3';
+  // const colorGrayFill = '#D8D8D8';
+  // const colorBlueStroke = '#0A7EDF';
+  // const colorGreenStroke = '#00A660';
+  // const colorOrangeStroke = '#EB6808';
+  // const colorRedStroke = '#E44C4C';
+  // const baseStrokeDark = '#36425A';
+  // const baseStrokeLight = '#A4A9B4';
+  // const baseFill = '#E9EBED';
+  // const themeStroke = '#417FF9';
+  // const themeFill = '#E8EFFE';
+  // const deleteStroke = '#EE544B';
+  // const deleteFill = '#FEF2F1';
+
+
+
+
+  // const iconStyle = '.colorBlackStroke{fill:#333840;}.colorGrayStroke{fill:#C3C3C3;}.colorGrayFill{fill:#D8D8D8;}.colorBlueStroke{fill:#0A7EDF;}.colorGreenStroke{fill:#00A660;}.colorOrangeStroke{fill:#EB6808;}.colorRedStroke{fill:#E44C4C;}.baseStrokeDark{fill:#36425A;}.baseStrokeLight{fill:#A4A9B4;}.baseFill{fill:#E9EBED;}.themeStroke{fill:#417FF9;}.themeFill{fill:#E8EFFE;}.deleteStroke{fill:#EE544B;}.deleteFill{fill:#FEF2F1;}';
 
 
   const mapData = {
-    fillArr : ['fill="#333840"', 'fill="#C3C3C3"', 'fill="#D8D8D8"', 'fill="#0A7EDF"', 'fill="#00A660"', 'fill="#EB6808"', 'fill="#E44C4C"','fill="#36425A"','fill="#A4A9B4"','fill="#E9EBED"','fill="#417FF9"','fill="#E8EFFE"','fill="#EE544B"','fill="#FEF2F1"'],
-    classArr : ['class="colorBlackStroke"', 'class="colorGrayStroke"', 'class="colorGrayFill"', 'class="colorBlueStroke"', 'class="colorGreenStroke"', 'class="colorOrangeStroke"', 'class="colorRedStroke"', 'class="baseStrokeDark"', 'class="baseStrokeLight"', 'class="baseFill"', 'class="themeStroke"', 'class="themeFill"', 'class="deleteStroke"', 'class="deleteFill"'],
+    fillArr : [
+      '#333840',
+      '#C3C3C3',
+      '#D8D8D8',
+      '#0A7EDF',
+      '#00A660',
+      '#EB6808',
+      '#E44C4C',
+      '#36425A',
+      '#A4A9B4',
+      '#E9EBED',
+      '#417FF9',
+      '#E8EFFE',
+      '#EE544B',
+      '#FEF2F1',
+        ],
+    classArr : [
+      'colorBlackStroke', 
+      'colorGrayStroke', 
+      'colorGrayFill', 
+      'colorBlueStroke',
+      'colorGreenStroke', 
+      'colorOrangeStroke',
+      'colorRedStroke', 
+      'baseStrokeDark', 
+      'baseStrokeLight', 
+      'baseFill',
+      'themeStroke',
+      'themeFill',
+      'deleteStroke',
+      'deleteFill',
+    ],
   };
 
 
   const svgStringArr = [];
 
   let svgString: string
-
+ 
 
   // let iconNameArr = [];
 
@@ -47,16 +99,23 @@ const Result = () => {
     if (msg.type === 'load-icon') {
 
       for (let i = 0; i < iconNameArr.length; i++) {
-        let svg = new TextDecoder().decode(svgDataArr[i])
+        const svg = new TextDecoder().decode(svgDataArr[i])
 
       // 将颜色换成class
-       for ( let i = 0; i < mapData.fillArr.length; i++ ){
-       svg = svg.replace(RegExp(mapData.fillArr[i], 'g'), mapData.classArr[i])
-       }
+      //  for ( let i = 0; i < mapData.fillArr.length; i++ ){
+      //  svg = svg.replace(RegExp(mapData.fillArr[i], 'g'), mapData.classArr[i])
+       
+      //  }
+
+      // console.log(svg);
+      
 
         // 将svg转为DOM
         const parser = new DOMParser()
         const svgDOM = parser.parseFromString(svg, 'image/svg+xml')
+
+        // console.log(svgDOM);
+        
     
         // 获取SVG元素
         const svgElement = svgDOM.documentElement
@@ -68,22 +127,47 @@ const Result = () => {
         // 插入style
         const styleElement = svgDOM.createElement('style');
         styleElement.setAttribute('type','text/css');
-        styleElement.innerHTML = iconStyle;
         svgElement.insertBefore(styleElement, svgElement.firstChild);
 
         const svgChildren = Array.from(svgElement.children).filter(child => child.tagName !== 'style');
 
         console.log(svgChildren);
-        
 
-        // // 去除fill-rule和clip-rule
-        // const svgElementChildren = svgElement.getElementsByTagName('*');
-        // for (let i = 0; i < svgElementChildren.length; i++) {
-        //   if (svgElementChildren[i].getAttribute('fill-rule') || svgElementChildren[i].getAttribute('clip-rule')) {
-        //     svgElementChildren[i].removeAttribute('fill-rule');
-        //     svgElementChildren[i].removeAttribute('clip-rule');
-        //   }
-        // }
+        if (svgChildren.length > 1) {
+          for (let i = 0; i < svgChildren.length; i++) {
+            const child = svgChildren[i];
+            const styleContent = document.createTextNode('');
+            if (child.hasAttribute('fill')) {
+              const index = mapData.fillArr.indexOf(child.getAttribute('fill'));
+              console.log(index);
+              
+              if (index !== -1) {
+                child.removeAttribute('fill');
+                child.setAttribute('class', mapData.classArr[index]);
+              }
+            styleContent.textContent += `.${mapData.classArr[index]}{fill:${mapData.fillArr[index]};}` ;
+
+            if (child.getAttribute('fill-rule')) {
+              // add fill-rule to style element
+              const fillRule = child.getAttribute('fill-rule');
+              child.removeAttribute('fill-rule');
+              styleContent.textContent += `.${mapData.classArr[i]}{fill-rule:${fillRule};}`;
+            }
+
+            if ( child.getAttribute('clip-rule')) {
+              // add clip-rule to style element
+              const clipRule = child.getAttribute('clip-rule');
+              child.removeAttribute('clip-rule');
+              styleContent.textContent += `.${mapData.classArr[i]}{clip-rule:${clipRule};}`;
+            }
+          }
+            styleElement.appendChild(styleContent);
+
+          }
+        }
+
+
+
 
         // 去除defs
         const defs = Array.from(svgDOM.getElementsByTagName('defs'))
@@ -246,7 +330,7 @@ const Result = () => {
         FileSaver(content, 'icons')
       })
     }
-    downloadFile(svgStringArr, svgNameArr)
+    downloadFile(svgArr, svgNameArr)
   }
 
   const onError = () => {
