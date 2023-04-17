@@ -45,10 +45,10 @@ const Result = () => {
       '#333840',
       '#C3C3C3',
       '#D8D8D8',
-      '#0A7EDF',
-      '#00A660',
-      '#EB6808',
-      '#E44C4C',
+      '#216FE4',
+      '#0A9447',
+      '#DC5513',
+      '#CF4242',
       '#36425A',
       '#A4A9B4',
       '#E9EBED',
@@ -133,37 +133,40 @@ const Result = () => {
 
         console.log(svgChildren);
 
-        if (svgChildren.length > 1) {
+        if (svgChildren.length > 0) {
           for (let i = 0; i < svgChildren.length; i++) {
             const child = svgChildren[i];
             const styleContent = document.createTextNode('');
             if (child.hasAttribute('fill')) {
               const index = mapData.fillArr.indexOf(child.getAttribute('fill'));
               console.log(index);
-              
               if (index !== -1) {
-                child.removeAttribute('fill');
                 child.setAttribute('class', mapData.classArr[index]);
+                child.removeAttribute('fill');
               }
             styleContent.textContent += `.${mapData.classArr[index]}{fill:${mapData.fillArr[index]};}` ;
 
             if (child.getAttribute('fill-rule')) {
               // add fill-rule to style element
               const fillRule = child.getAttribute('fill-rule');
+             
+              styleContent.textContent += `.${mapData.classArr[index]}{fill-rule:${fillRule};}`;
               child.removeAttribute('fill-rule');
-              styleContent.textContent += `.${mapData.classArr[i]}{fill-rule:${fillRule};}`;
             }
 
             if ( child.getAttribute('clip-rule')) {
               // add clip-rule to style element
               const clipRule = child.getAttribute('clip-rule');
+              styleContent.textContent += `.${mapData.classArr[index]}{clip-rule:${clipRule};}`;
               child.removeAttribute('clip-rule');
-              styleContent.textContent += `.${mapData.classArr[i]}{clip-rule:${clipRule};}`;
             }
           }
             styleElement.appendChild(styleContent);
 
           }
+        }else {
+          console.log('no children');
+          
         }
 
 
@@ -186,6 +189,9 @@ const Result = () => {
         console.log(svgString)
 
         svgStringArr.push(svgString)
+
+        console.log(svgDOM);
+        
 
         const iconWrap = document.createElement('div')
         iconWrap.innerHTML =(svgString)
@@ -223,8 +229,10 @@ const Result = () => {
         const viewBox12 = '0 0 12 12';
         const viewBox32 = '0 0 32 32';
         const viewBox48 = '0 0 48 48';
+        const viewBox60 = '0 0 60 60';
+        const viewBox64 = '0 0 64 64';
 
-        const allowViewBox = [viewBox12,viewBox16,viewBox24,viewBox32,viewBox48]
+        const allowViewBox = [viewBox12,viewBox16,viewBox24,viewBox32,viewBox48,viewBox60,viewBox64];
 
         
         if(svgChildren.every(child => child.getAttribute('stroke')==null)){
