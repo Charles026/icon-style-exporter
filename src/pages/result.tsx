@@ -224,15 +224,18 @@ const Result = () => {
 
         const viewBoxAttr = svgElement.getAttribute('viewBox');
 
+        const viewBox8 = '0 0 8 8';
+        const viewBox10 = '0 0 10 10';
+        const viewBox12 = '0 0 12 12';
+        const viewBox14 = '0 0 14 14';
         const viewBox16 = '0 0 16 16';
         const viewBox24 = '0 0 24 24';
-        const viewBox12 = '0 0 12 12';
         const viewBox32 = '0 0 32 32';
         const viewBox48 = '0 0 48 48';
         const viewBox60 = '0 0 60 60';
         const viewBox64 = '0 0 64 64';
 
-        const allowViewBox = [viewBox12,viewBox16,viewBox24,viewBox32,viewBox48,viewBox60,viewBox64];
+        const allowViewBox = [viewBox8,viewBox10,viewBox12,viewBox14,viewBox16,viewBox24,viewBox32,viewBox48,viewBox60,viewBox64];
 
         
         if(svgChildren.every(child => child.getAttribute('stroke')==null)){
