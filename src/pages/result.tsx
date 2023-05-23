@@ -19,36 +19,16 @@ const Result = () => {
 
   // color variables
 
-  // const colorBlackStroke = '#333840';
-  // const colorGrayStroke = '#C3C3C3';
-  // const colorGrayFill = '#D8D8D8';
-  // const colorBlueStroke = '#0A7EDF';
-  // const colorGreenStroke = '#00A660';
-  // const colorOrangeStroke = '#EB6808';
-  // const colorRedStroke = '#E44C4C';
-  // const baseStrokeDark = '#36425A';
-  // const baseStrokeLight = '#A4A9B4';
-  // const baseFill = '#E9EBED';
-  // const themeStroke = '#417FF9';
-  // const themeFill = '#E8EFFE';
-  // const deleteStroke = '#EE544B';
-  // const deleteFill = '#FEF2F1';
-
-
-
-
-  // const iconStyle = '.colorBlackStroke{fill:#333840;}.colorGrayStroke{fill:#C3C3C3;}.colorGrayFill{fill:#D8D8D8;}.colorBlueStroke{fill:#0A7EDF;}.colorGreenStroke{fill:#00A660;}.colorOrangeStroke{fill:#EB6808;}.colorRedStroke{fill:#E44C4C;}.baseStrokeDark{fill:#36425A;}.baseStrokeLight{fill:#A4A9B4;}.baseFill{fill:#E9EBED;}.themeStroke{fill:#417FF9;}.themeFill{fill:#E8EFFE;}.deleteStroke{fill:#EE544B;}.deleteFill{fill:#FEF2F1;}';
-
-
   const mapData = {
     fillArr : [
-      '#333840',
-      '#C3C3C3',
-      '#D8D8D8',
-      '#216FE4',
-      '#0A9447',
-      '#DC5513',
-      '#CF4242',
+      '#333333',
+      'white',
+      '#DBDBDB',
+      '#CCCCCC',
+      '#2453DE',
+      '#057C52',
+      '#C25010',
+      '#C02549',
       '#36425A',
       '#A4A9B4',
       '#E9EBED',
@@ -59,6 +39,7 @@ const Result = () => {
         ],
     classArr : [
       'colorBlackStroke', 
+      'colorBlackFill', 
       'colorGrayStroke', 
       'colorGrayFill', 
       'colorBlueStroke',
@@ -139,7 +120,7 @@ const Result = () => {
             const styleContent = document.createTextNode('');
             if (child.hasAttribute('fill')) {
               const index = mapData.fillArr.indexOf(child.getAttribute('fill'));
-              console.log(index);
+              console.log('输出',index);
               if (index !== -1) {
                 child.setAttribute('class', mapData.classArr[index]);
                 child.removeAttribute('fill');
@@ -234,8 +215,9 @@ const Result = () => {
         const viewBox48 = '0 0 48 48';
         const viewBox60 = '0 0 60 60';
         const viewBox64 = '0 0 64 64';
+        const viewBox2416 = '0 0 24 16';
 
-        const allowViewBox = [viewBox8,viewBox10,viewBox12,viewBox14,viewBox16,viewBox24,viewBox32,viewBox48,viewBox60,viewBox64];
+        const allowViewBox = [viewBox8,viewBox10,viewBox12,viewBox14,viewBox16,viewBox24,viewBox32,viewBox48,viewBox60,viewBox64,viewBox2416];
 
         
         if(svgChildren.every(child => child.getAttribute('stroke')==null)){
